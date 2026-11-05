@@ -1,0 +1,28 @@
+# 비서 DB (README.md). .env 의 DB_BACKEND=postgres 일 때 쓴다. 서비스 두 개는 systemd 그대로, DB 만 컨테이너다.
+# 실행 (assistant/ 폴더에서): docker compose --env-file .env -f deploy/postgres/docker-compose.yml up -d
+# 멈춤: docker compose --env-file .env -f deploy/postgres/docker-compose.yml down   (데이터는 볼륨에 남는다. down -v 는 지운다)
+# 보기: docker exec -it assistant-postgres psql -U postgres -d assistant   (DBeaver 는 SSH 터널로)
+# POSTGRES_PASSWORD 는 볼륨을 처음 만들 때만 쓰인다. env_file 을 쓰지 않아 .env 의 다른 비밀은 컨테이너로 들어가지 않는다.
+services:
+  postgres:
+    image: postgres:17
+    container_name: assistant-postgres
+    restart: unless-stopped
+    command: ["postgres", "-c", "timezone=Asia/Seoul", "-c", "log_timezone=Asia/Seoul"]  # 직접 조회해도 KST 로 보이게
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD 를 .env 에 넣어 주세요}
+      POSTGRES_DB: ${POSTGRES_DB:-assistant}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"  # 이 컴퓨터 안에서만 (밖에 열지 않는다)
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+    name: assistant-pgdata

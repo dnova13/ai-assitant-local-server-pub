@@ -1,0 +1,5 @@
+.env
+documents.json
+data/
+__pycache__/
+deploy/qdrant/storage/

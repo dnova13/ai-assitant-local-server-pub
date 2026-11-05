@@ -1,0 +1,16 @@
+# 예시 파일. /etc/systemd/system/assistant-bot.service 로 복사한 뒤 {…} 부분을 실제 값으로 바꾼다 (경로는 pwd 로 확인. 가상환경은 저장소 맨 위 .venv)
+# 비서 입구(assistant-api)를 부르므로 그 서비스 뒤에 시작한다.
+[Unit]
+Description=Personal Assistant Discord Bot
+After=network-online.target assistant-api.service
+Wants=assistant-api.service
+
+[Service]
+User={사용자명}
+WorkingDirectory={assistant 폴더 경로}
+ExecStart={저장소 맨 위 경로}/.venv/bin/python -m entrances.discord_bot
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

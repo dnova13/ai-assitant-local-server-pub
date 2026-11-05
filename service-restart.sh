@@ -1,0 +1,1 @@
+ sudo systemctl restart assistant-api assistant-bot

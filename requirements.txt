@@ -1,0 +1,10 @@
+requests>=2.31
+discord.py>=2.3
+psutil>=5.9
+fastapi>=0.110
+uvicorn>=0.29
+websockets>=12
+numpy>=1.24
+psycopg[binary,pool]>=3.2  # .env 의 DB_BACKEND=postgres 일 때 쓴다
+httpx>=0.27  # 단위 시험의 TestClient 가 쓴다
+qdrant-client==1.20.0  # deploy/qdrant 의 서버 이미지 버전과 맞춘다

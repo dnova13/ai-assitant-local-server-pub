@@ -1,0 +1,18 @@
+# 비밀/개인 데이터
+.env
+*.db
+assistant/data/
+
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+.bench-venv/
+
+# macOS
+.DS_Store
+
+# 스크린샷 (서버 공인 IP/포트가 보임 - 저장소에 올리지 않음)
+images/
+
+assistant/data.bak-*/

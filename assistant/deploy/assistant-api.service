@@ -1,0 +1,14 @@
+# 예시 파일. /etc/systemd/system/assistant-api.service 로 복사한 뒤 {…} 부분을 실제 값으로 바꾼다 (경로는 pwd 로 확인. 가상환경은 저장소 맨 위 .venv)
+[Unit]
+Description=Personal Assistant API (앱·봇 입구, 포트 8050)
+After=network-online.target ollama.service
+
+[Service]
+User={사용자명}
+WorkingDirectory={assistant 폴더 경로}
+ExecStart={저장소 맨 위 경로}/.venv/bin/python -m entrances.api_server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
